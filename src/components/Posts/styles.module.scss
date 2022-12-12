@@ -1,0 +1,28 @@
+.postCard {
+  padding: 2rem;
+  background-color: var(--base-post);
+  border-radius: 10px;
+
+  .titleAndTime {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+
+    .title {
+      color: var(--base-title);
+      font-weight: 700;
+      font-size: 1.25rem;
+      max-width: 17.75rem;
+    }
+
+    .time {
+      color: var(--base-span);
+      flex-shrink: 0;
+    }
+  }
+
+  .description {
+    color: var(--base-text);
+  }
+}
