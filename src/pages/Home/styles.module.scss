@@ -92,6 +92,6 @@
   .postsContainer {
     display: grid;
     gap: 2rem;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 50% 50%;
   }
 }
