@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Posts from '../../components/Posts';
 import s from './styles.module.scss';
 import api from '../../lib/api';
+import { ArrowSquareOut, Buildings, GithubLogo, Users } from 'phosphor-react';
 
 interface IUser {
   name: string;
@@ -48,7 +49,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className={s.homeContainer}>
+    <main className={s.homeContainer}>
       <section className={s.userCard}>
         <img src={user?.avatar_url} alt='' />
         <div className={s.userData}>
@@ -56,21 +57,28 @@ const Home = () => {
             <h1 className={s.username}>{user?.name}</h1>
             <a className={s.githubLink} href={user?.html_url} target='_blank'>
               GitHub
+              <ArrowSquareOut size={16} weight='bold' />
             </a>
           </div>
           <p className={s.userDescription}>{user?.bio}</p>
-          <div className={s.anothersInfo}>
-            <a href={user?.html_url} target='_blank'>
+          <aside className={s.aside}>
+            <a className={s.asideInfo} href={user?.html_url} target='_blank'>
+              <GithubLogo size={18} weight='duotone' />
               {user?.login}
             </a>
             <a
+              className={s.asideInfo}
               href={`https://twitter.com/${user?.twitter_username}`}
               target='_blank'
             >
+              <Buildings size={18} weight='duotone' />
               {user?.twitter_username}
             </a>
-            <span>{user?.followers} Seguidores</span>
-          </div>
+            <span className={s.asideInfo}>
+              <Users size={18} weight='duotone' />
+              {`${user?.followers} Seguidores`}
+            </span>
+          </aside>
         </div>
       </section>
       <form action=''>
@@ -87,7 +95,7 @@ const Home = () => {
           <Posts key={id} {...post} />
         ))}
       </div>
-    </div>
+    </main>
   );
 };
 

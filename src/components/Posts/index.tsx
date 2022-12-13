@@ -10,13 +10,13 @@ type TPostProps = Omit<IItens, 'id' | 'url'>;
 
 const Posts = ({ title, body, updated_at }: TPostProps) => {
   return (
-    <div className={s.postCard}>
+    <article className={s.postCard}>
       <div className={s.titleAndTime}>
         <h3 className={s.title}>{title}</h3>
         <time className={s.time}>{dayjs(updated_at).fromNow()}</time>
       </div>
       <p className={s.description}>{body}</p>
-    </div>
+    </article>
   );
 };
 
