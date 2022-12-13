@@ -18,6 +18,7 @@ export interface IItens {
   title: string;
   body: string;
   id: number;
+  updated_at: string;
 }
 
 interface IIssues {
