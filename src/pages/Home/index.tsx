@@ -3,6 +3,7 @@ import Posts from '../../components/Posts';
 import s from './styles.module.scss';
 import api from '../../lib/api';
 import { ArrowSquareOut, Buildings, GithubLogo, Users } from 'phosphor-react';
+import Loading from '../../components/Loading';
 
 interface IUser {
   name: string;
@@ -35,47 +36,52 @@ const Home = () => {
   const repo = 'reactjs-github-blog-challenge';
 
   useEffect(() => {
-    async function getData() {
-      const { data } = await api.get<IUser>(`/users/${username}`);
-      const { data: issuesData } = await api.get<IIssues>(
-        `/search/issues?q=repo:${username}/${repo}`
-      );
+    try {
+      async function getData() {
+        const { data } = await api.get<IUser>(`/users/${username}`);
+        const { data: issuesData } = await api.get<IIssues>(
+          `/search/issues?q=repo:${username}/${repo}`
+        );
 
-      setUser(data);
-      setIssues(issuesData);
-      console.log(data);
+        setUser(data);
+        setIssues(issuesData);
+      }
+
+      getData();
+    } catch (e) {
+      console.log(e);
     }
-
-    getData();
   }, []);
 
-  return (
+  return user === null ? (
+    <Loading />
+  ) : (
     <main className={s.homeContainer}>
       <section className={s.userCard}>
-        <img src={user?.avatar_url} alt='' />
+        <img src={user.avatar_url} alt='' />
         <div className={s.userData}>
           <div className={s.nameAndGithubLink}>
-            <h1 className={s.username}>{user?.name}</h1>
-            <a className={s.githubLink} href={user?.html_url} target='_blank'>
+            <h1 className={s.username}>{user.name}</h1>
+            <a className={s.githubLink} href={user.html_url} target='_blank'>
               GitHub
               <ArrowSquareOut size={16} weight='bold' />
             </a>
           </div>
-          <p className={s.userDescription}>{user?.bio}</p>
+          <p className={s.userDescription}>{user.bio}</p>
           <aside className={s.aside}>
             <span className={s.asideInfo}>
               <GithubLogo size={18} weight='duotone' />
-              {user?.login}
+              {user.login}
             </span>
-            {user?.company && (
+            {user.company && (
               <span className={s.asideInfo}>
                 <Buildings size={18} weight='duotone' />
-                {user?.company}
+                {user.company}
               </span>
             )}
             <span className={s.asideInfo}>
               <Users size={18} weight='duotone' />
-              {`${user?.followers} Seguidores`}
+              {`${user.followers} Seguidores`}
             </span>
           </aside>
         </div>

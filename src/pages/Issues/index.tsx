@@ -9,9 +9,12 @@ import {
   ChatCircleText,
   GithubLogo,
 } from 'phosphor-react';
+import ReactMarkdown from 'react-markdown';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import ptBr from 'dayjs/locale/pt-br';
+import { Link } from 'react-router-dom';
+import Loading from '../../components/Loading';
 dayjs.extend(relativeTime);
 dayjs.locale(ptBr);
 
@@ -35,20 +38,26 @@ const Issue = () => {
         `/repos/${username}/${repo}/issues/1`
       );
       setIssue(data);
-      console.log(data);
     }
-    getData();
+
+    try {
+      getData();
+    } catch (e) {
+      console.log(e);
+    }
   }, []);
 
-  return (
+  return issue === null ? (
+    <Loading />
+  ) : (
     <main className={s.issueContainer}>
       <section className={s.issueHeader}>
         <div className={s.issueData}>
           <nav className={s.nav}>
-            <a className={s.back}>
+            <Link to={'/'} className={s.back}>
               <CaretLeft size={16} weight='duotone' />
               Voltar
-            </a>
+            </Link>
 
             <a className={s.githubLink} href={issue?.html_url} target='_blank'>
               GitHub
@@ -77,7 +86,9 @@ const Issue = () => {
         </div>
       </section>
 
-      <article className={s.articleContainer}>{issue?.body}</article>
+      <ReactMarkdown className={s.articleContainer}>
+        {issue?.body ? issue.body : ''}
+      </ReactMarkdown>
     </main>
   );
 };

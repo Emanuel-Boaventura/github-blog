@@ -25,6 +25,7 @@
 
         .back {
           color: var(--blue);
+          text-decoration: none;
           display: flex;
           align-items: flex-start;
           gap: 0.5rem;
@@ -72,5 +73,33 @@
   .articleContainer {
     padding: 0 2rem;
     color: var(--base-text);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    strong {
+      color: var(--base-subtitle);
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    ul {
+      padding-left: 1.5rem;
+    }
+
+    img {
+      width: 100%;
+    }
+
+    h3 {
+      color: var(--base-subtitle);
+    }
+
+    h2 {
+      color: var(--base-title);
+    }
   }
 }
