@@ -9,7 +9,7 @@ interface IUser {
   avatar_url: string;
   bio: string;
   followers: number;
-  twitter_username: string;
+  company: string;
   html_url: string;
   login: string;
 }
@@ -20,6 +20,7 @@ export interface IItens {
   body: string;
   id: number;
   updated_at: string;
+  number: number;
 }
 
 interface IIssues {
@@ -42,7 +43,7 @@ const Home = () => {
 
       setUser(data);
       setIssues(issuesData);
-      console.log(issuesData);
+      console.log(data);
     }
 
     getData();
@@ -62,18 +63,16 @@ const Home = () => {
           </div>
           <p className={s.userDescription}>{user?.bio}</p>
           <aside className={s.aside}>
-            <a className={s.asideInfo} href={user?.html_url} target='_blank'>
+            <span className={s.asideInfo}>
               <GithubLogo size={18} weight='duotone' />
               {user?.login}
-            </a>
-            <a
-              className={s.asideInfo}
-              href={`https://twitter.com/${user?.twitter_username}`}
-              target='_blank'
-            >
-              <Buildings size={18} weight='duotone' />
-              {user?.twitter_username}
-            </a>
+            </span>
+            {user?.company && (
+              <span className={s.asideInfo}>
+                <Buildings size={18} weight='duotone' />
+                {user?.company}
+              </span>
+            )}
             <span className={s.asideInfo}>
               <Users size={18} weight='duotone' />
               {`${user?.followers} Seguidores`}
