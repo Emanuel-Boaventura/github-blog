@@ -13,7 +13,7 @@ import ReactMarkdown from 'react-markdown';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import ptBr from 'dayjs/locale/pt-br';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Loading from '../../components/Loading';
 dayjs.extend(relativeTime);
 dayjs.locale(ptBr);
@@ -29,13 +29,15 @@ interface IIssue {
 
 const Issue = () => {
   const [issue, setIssue] = useState<IIssue | null>(null);
+  const { number } = useParams();
+
   const username = 'rocketseat-education';
   const repo = 'reactjs-github-blog-challenge';
 
   useEffect(() => {
     async function getData() {
       const { data } = await api.get<IIssue>(
-        `/repos/${username}/${repo}/issues/1`
+        `/repos/${username}/${repo}/issues/${number}`
       );
       setIssue(data);
     }
