@@ -32,6 +32,7 @@ interface IIssues {
 const Home = () => {
   const [user, setUser] = useState<IUser | null>(null);
   const [issues, setIssues] = useState<IIssues | null>(null);
+  const [query, setQuery] = useState('');
   const username = 'rocketseat-education';
   const repo = 'reactjs-github-blog-challenge';
 
@@ -39,11 +40,11 @@ const Home = () => {
     try {
       async function getData() {
         const { data } = await api.get<IUser>(`/users/${username}`);
-        const { data: issuesData } = await api.get<IIssues>(
-          `/search/issues?q=repo:${username}/${repo}`
-        );
-
         setUser(data);
+
+        const { data: issuesData } = await api.get<IIssues>(
+          `/search/issues?q=${query}%20repo:${username}/${repo}`
+        );
         setIssues(issuesData);
       }
 
@@ -52,6 +53,18 @@ const Home = () => {
       console.log(e);
     }
   }, []);
+
+  async function handleOnChange(query: string) {
+    setQuery(query);
+    console.log(query);
+
+    const { data: issuesData } = await api.get<IIssues>(
+      `/search/issues?q=${query}%20repo:${username}/${repo}`
+    );
+
+    console.log(issuesData);
+    setIssues(issuesData);
+  }
 
   return user === null ? (
     <Loading />
@@ -93,13 +106,22 @@ const Home = () => {
             {issues?.total_count} Publicações
           </span>
         </div>
-        <input placeholder='Buscar conteúdo' type='text' />
+        <input
+          value={query}
+          onChange={(e) => handleOnChange(e.target.value)}
+          placeholder='Buscar conteúdo'
+          type='text'
+        />
       </form>
-      <div className={s.postsContainer}>
-        {issues?.items.map(({ id, ...post }) => (
-          <Posts key={id} {...post} />
-        ))}
-      </div>
+      {issues === null ? (
+        <Loading />
+      ) : (
+        <div className={s.postsContainer}>
+          {issues?.items.map(({ id, ...post }) => (
+            <Posts key={id} {...post} />
+          ))}
+        </div>
+      )}
     </main>
   );
 };

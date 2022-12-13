@@ -109,6 +109,7 @@
 
   .postsContainer {
     display: grid;
+    max-width: 52rem;
     gap: 2rem;
     grid-template-columns: 50% 50%;
   }
