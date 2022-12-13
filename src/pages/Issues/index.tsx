@@ -1,8 +1,19 @@
-import { useEffect, useState } from 'react';
-
 import s from './styles.module.scss';
+
+import { useEffect, useState } from 'react';
 import api from '../../lib/api';
-import { ArrowSquareOut, CaretLeft, GithubLogo } from 'phosphor-react';
+import {
+  ArrowSquareOut,
+  CalendarBlank,
+  CaretLeft,
+  ChatCircleText,
+  GithubLogo,
+} from 'phosphor-react';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import ptBr from 'dayjs/locale/pt-br';
+dayjs.extend(relativeTime);
+dayjs.locale(ptBr);
 
 interface IIssue {
   html_url: string;
@@ -10,73 +21,65 @@ interface IIssue {
   body: string;
   updated_at: string;
   comments: number;
+  user: { login: string };
 }
 
 const Issue = () => {
-  // const [issue, setIssue] = useState<IIssue | null>(null);
-  // const username = 'rocketseat-education';
-  // const repo = 'reactjs-github-blog-challenge';
-  // useEffect(() => {
-  //   async function getData() {
-  //     const { data } = await api.get<IIssue>(
-  //       `/repos/${username}/${repo}/issues/2 `
-  //     );
-  //     setIssue(data);
-  //     console.log(data);
-  //   }
-  //   getData();
-  // }, []);
-  // return (
-  //   <main className={s.homeContainer}>
-  //     <section className={s.userCard}>
-  //       <div className={s.userData}>
-  //         <nav className={s.nav}>
-  //           <a className={s.back}>
-  //             <CaretLeft size={12} weight='duotone' />
-  //             Voltar
-  //           </a>
-  //           <a className={s.githubLink} href={issue?.html_url} target='_blank'>
-  //             GitHub
-  //             <ArrowSquareOut size={16} weight='bold' />
-  //           </a>
-  //         </nav>
-  //         <h2 className={s.title}>{issue?.title}</h2>
-  //         <aside className={s.aside}>
-  //           <a className={s.asideInfo} href={user?.html_url} target='_blank'>
-  //             <GithubLogo size={18} weight='duotone' />
-  //             {user?.login}
-  //           </a>
-  //           <a
-  //             className={s.asideInfo}
-  //             href={`https://twitter.com/${user?.twitter_username}`}
-  //             target='_blank'
-  //           >
-  //             <Buildings size={18} weight='duotone' />
-  //             {user?.twitter_username}
-  //           </a>
-  //           <span className={s.asideInfo}>
-  //             <Users size={18} weight='duotone' />
-  //             {`${user?.followers} Seguidores`}
-  //           </span>
-  //         </aside>
-  //       </div>
-  //     </section>
-  //     <form action=''>
-  //       <div>
-  //         <h2 className={s.formTitle}>Publicações</h2>
-  //         <span className={s.issuesAmount}>
-  //           {issues?.total_count} Publicações
-  //         </span>
-  //       </div>
-  //       <input placeholder='Buscar conteúdo' type='text' />
-  //     </form>
-  //     <div className={s.postsContainer}>
-  //       {issues?.items.map(({ id, ...post }) => (
-  //         <Posts key={id} {...post} />
-  //       ))}
-  //     </div>
-  //   </main>
-  // );
+  const [issue, setIssue] = useState<IIssue | null>(null);
+  const username = 'rocketseat-education';
+  const repo = 'reactjs-github-blog-challenge';
+
+  useEffect(() => {
+    async function getData() {
+      const { data } = await api.get<IIssue>(
+        `/repos/${username}/${repo}/issues/1`
+      );
+      setIssue(data);
+      console.log(data);
+    }
+    getData();
+  }, []);
+
+  return (
+    <main className={s.issueContainer}>
+      <section className={s.issueHeader}>
+        <div className={s.issueData}>
+          <nav className={s.nav}>
+            <a className={s.back}>
+              <CaretLeft size={16} weight='duotone' />
+              Voltar
+            </a>
+
+            <a className={s.githubLink} href={issue?.html_url} target='_blank'>
+              GitHub
+              <ArrowSquareOut size={16} weight='bold' />
+            </a>
+          </nav>
+
+          <h2 className={s.title}>{issue?.title}</h2>
+
+          <aside className={s.aside}>
+            <span>
+              <GithubLogo size={18} weight='duotone' />
+              {issue?.user.login}
+            </span>
+
+            <span>
+              <CalendarBlank size={18} weight='duotone' />
+              {dayjs(issue?.updated_at).fromNow()}
+            </span>
+
+            <span>
+              <ChatCircleText size={18} weight='duotone' />
+              {`${issue?.comments} Comentários`}
+            </span>
+          </aside>
+        </div>
+      </section>
+
+      <article className={s.articleContainer}>{issue?.body}</article>
+    </main>
+  );
 };
 
 export default Issue;
