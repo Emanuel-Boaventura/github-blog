@@ -40,6 +40,7 @@ const Home = () => {
 
       setUser(data);
       setIssues(issuesData);
+      console.log(issuesData);
     }
 
     getData();

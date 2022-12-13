@@ -3,12 +3,15 @@
   background-color: var(--base-post);
   border-radius: 10px;
   max-height: 16.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.5rem;
 
   .titleAndTime {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: 1.25rem;
 
     .title {
       color: var(--base-title);
@@ -30,10 +33,10 @@
 
   .description {
     color: var(--base-text);
+    height: 7.75rem;
     overflow: hidden;
-
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
   }
 }
